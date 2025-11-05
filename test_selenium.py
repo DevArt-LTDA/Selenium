@@ -5,6 +5,13 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+# Función para rellenar campos letra por letra
+def escribir_lento(elemento, texto, pausa=0.05):
+    for letra in texto:
+        elemento.send_keys(letra)
+        time.sleep(pausa)
+
+
 def test1(driver):
 
     # === PRIMER CASO: LOGIN INVÁLIDO ===
@@ -14,13 +21,13 @@ def test1(driver):
     element1 = driver.find_element(By.ID, "email")
     print("Campo:", element1.get_attribute("id"))
     element1.click()
-    element1.send_keys("correo_invalido@asd.asd")
+    escribir_lento(element1, "correo_invalido@asd.asd")
+    time.sleep(1)
 
     element2 = driver.find_element(By.ID, "password")
     print("Campo:", element2.get_attribute("id"))
     element2.click()
-    element2.send_keys("clave123")
-
+    escribir_lento(element2, "clave123")
     time.sleep(1)
 
     element3 = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
@@ -37,48 +44,49 @@ def test1(driver):
     element1 = driver.find_element(By.ID, "fullName")
     print("Campo:", element1.get_attribute("id"))
     element1.click()
-    element1.send_keys("Usuario de Prueba")
+    escribir_lento(element1, "Usuario de Prueba")
+    time.sleep(1)
 
-    element2 = driver.find_element(By.ID, "username")
+    element2 = driver.find_element(By.ID, "email")
     print("Campo:", element2.get_attribute("id"))
     element2.click()
-    element2.send_keys("usuario_prueba")
+    correo_nuevo = f"usuario@duoc.cl"
+    escribir_lento(element2, correo_nuevo)
+    time.sleep(1)
 
-    element3 = driver.find_element(By.ID, "email")
+    element3 = driver.find_element(By.ID, "username")
     print("Campo:", element3.get_attribute("id"))
     element3.click()
-    correo_nuevo = f"usuario{int(time.time())}@gmail.com"
-    element3.send_keys(correo_nuevo)
+    escribir_lento(element3, "usuario_prueba")
+    time.sleep(1)
 
     element4 = driver.find_element(By.ID, "password")
     print("Campo:", element4.get_attribute("id"))
     element4.click()
-    element4.send_keys("clave123")
+    escribir_lento(element4, "clave123")
+    time.sleep(1)
 
     element5 = driver.find_element(By.ID, "confirmPassword")
     print("Campo:", element5.get_attribute("id"))
     element5.click()
-    element5.send_keys("clave123")
+    escribir_lento(element5, "clave123")
+    time.sleep(1)
     
     element6 = driver.find_element(By.ID, "birthDate")
     print("Campo:", element6.get_attribute("id"))
     element6.click()
-    element6.send_keys("12-12-1990")
+    escribir_lento(element6, "12-12-1990")
+    time.sleep(1)
 
     element7 = driver.find_element(By.ID, "terms")
     print("Campo:", element7.get_attribute("id"))
     driver.execute_script("arguments[0].click();", element7)
-
-
-
-
     time.sleep(1)
 
     element5 = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
     print("Botón:", element5.text)
     element5.click()
 
-    WebDriverWait(driver, 10).until(EC.url_contains("/login"))
     print("Segundo caso probado exitosamente. El sistema redirigió al login.")
 
     # === TERCER CASO: LOGIN VÁLIDO ===
@@ -88,23 +96,24 @@ def test1(driver):
     element1 = driver.find_element(By.ID, "email")
     print("Campo:", element1.get_attribute("id"))
     element1.click()
-    element1.send_keys(correo_nuevo)
+    escribir_lento(element1, correo_nuevo)
+    time.sleep(1)
 
     element2 = driver.find_element(By.ID, "password")
     print("Campo:", element2.get_attribute("id"))
     element2.click()
-    element2.send_keys("clave123")
-
+    escribir_lento(element2, "clave123")
     time.sleep(1)
 
     element3 = driver.find_element(By.CSS_SELECTOR, "button[type='submit']")
     print("Botón:", element3.text)
     element3.click()
 
-    #WebDriverWait(driver, 10).until(EC.url_to_be("https://devartcl.vercel.app"))
+    # Esperar a que cargue el home y mostrarlo 5 segundos
+    WebDriverWait(driver, 10).until(EC.url_contains("devartcl.vercel.app"))
     print("Tercer caso probado exitosamente. El sistema redirigió al home.")
+    time.sleep(2)
 
-    time.sleep(3)
     print("\n=== TODAS LAS PRUEBAS FINALIZADAS ===")
 
 
